@@ -42,6 +42,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="RedisConfig\icon.png" />
+    <Content Include="screenshot.jpg" />
     <None Include="gruntfile.js" />
     <None Include="license.md" />
     <None Include="package.json" />

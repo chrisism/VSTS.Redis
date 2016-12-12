@@ -50,7 +50,7 @@
 		"Build and release"
 	],
 	"icons": {
-		"default": "logo.png"
+		"default": "img/logo.png"
 	},
 	"files": [
 		{ "path": "RedisConfig" }
