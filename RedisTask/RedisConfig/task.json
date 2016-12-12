@@ -1,0 +1,373 @@
+{
+	"id": "86c40818-5d5f-49d1-a002-2fbf6b7c855f",
+	"name": "RedisConfig",
+	"friendlyName": "Redis - Configure instance",
+	"description": "Configuration of a Redis instance",
+	"author": "Jungerius IT",
+	"helpMarkDown": "",
+	"category": "Deploy",
+	"visibility": [
+		"Release"
+	],
+	"demands": [],
+	"version": {
+		"Major": "1",
+		"Minor": "0",
+		"Patch": "12"
+	},
+	"minimumAgentVersion": "1.83.0",
+	"instanceNameFormat": "Configure redis instance $(serviceName)",
+	"groups": [
+		{
+			"name": "advanced",
+			"displayName": "Advanced settings",
+			"isExpanded": false
+		},
+		{
+			"name": "logging",
+			"displayName": "Logging settings",
+			"isExpanded": false
+		},
+		{
+			"name": "masterslave",
+			"displayName": "Master/Slave settings",
+			"isExpanded": false
+		},
+		{
+			"name": "replication",
+			"displayName": "Replication settings",
+			"isExpanded": false
+		}
+	],
+	"inputs": [
+		{
+			"name": "redisFolder",
+			"type": "filePath",
+			"label": "Redis folder",
+			"defaultValue": "",
+			"required": true,
+			"helpMarkDown": "Folder where redis is installed."
+		},
+		{
+			"name": "serviceName",
+			"type": "string",
+			"label": "Service name",
+			"defaultValue": "RedisService",
+			"required": true,
+			"helpMarkDown": "The name of the service instance of Redis"
+		},
+		{
+			"name": "port",
+			"type": "string",
+			"label": "Port",
+			"defaultValue": "6379",
+			"required": true,
+			"helpMarkDown": "Accept connections on the specified port, default is 6379. If port 0 is specified Redis will not listen on a TCP socket."
+		},
+		{
+			"name": "bindIp",
+			"type": "string",
+			"label": "IP",
+			"defaultValue": "",
+			"required": false,
+			"helpMarkDown": "By default Redis listens for connections from all the network interfaces available on the server. It is possible to listen to just one or multiple interfaces by entering one or more IP addresses. Examples: * 192.168.1.100 10.0.0.1 * 127.0.0.1"
+		},
+		{
+			"name": "requireAuth",
+			"type": "boolean",
+			"label": "Use authentication",
+			"defaultValue": "False",
+			"required": false,
+			"helpMarkDown": "Require clients to issue AUTH <PASSWORD> before processing any other commands. This might be useful in environments in which you do not trust others with access to the host running redis-server."
+		},
+		{
+			"name": "redisPassword",
+			"type": "string",
+			"label": "Password",
+			"defaultValue": "",
+			"required": false,
+			"visibleRule": "requireAuth = true",
+			"helpMarkDown": "Require clients to issue AUTH <PASSWORD> before processing any other commands. This might be useful in environments in which you do not trust others with access to the host running redis-server."
+		},
+		{
+			"name": "isSentinel",
+			"type": "boolean",
+			"label": "Run as sentinel",
+			"defaultValue": "False",
+			"required": true,
+			"helpMarkDown": "Run this instance as a sentinel"
+		},
+		{
+			"name": "sentinelMasterIP",
+			"type": "string",
+			"label": "Master IP",
+			"defaultValue": "",
+			"required": true,
+			"visibleRule": "isSentinel = true",
+			"helpMarkDown": "Tells Sentinel to monitor this master on this IP address."
+		},
+		{
+			"name": "sentinelMasterPort",
+			"type": "string",
+			"label": "Master Port",
+			"defaultValue": "",
+			"required": true,
+			"visibleRule": "isSentinel = true",
+			"helpMarkDown": "Tells Sentinel to monitor this master on this port number."
+		},
+		{
+			"name": "sentinelQuorum",
+			"type": "string",
+			"label": "Quorum",
+			"defaultValue": "1",
+			"required": false,
+			"visibleRule": "isSentinel = true",
+			"helpMarkDown": "Amount of Sentinels that is needed to indicate master changes."
+		},
+		{
+			"name": "sentinelDownAfter",
+			"type": "string",
+			"label": "Down period",
+			"defaultValue": "30000",
+			"required": false,
+			"visibleRule": "isSentinel = true",
+			"helpMarkDown": "Number of milliseconds the master (or any attached slave or sentinel) should be unreachable (as in, not acceptable reply to PING, continuously, for the specified period) in order to consider it in S_DOWN state (Subjectively Down). Default is 30 seconds."
+		},
+		{
+			"name": "sentinelFailover",
+			"type": "string",
+			"label": "Failover-timeout",
+			"defaultValue": "180000",
+			"required": false,
+			"visibleRule": "isSentinel = true",
+			"helpMarkDown": "Specifies the failover timeout in milliseconds. It is used in many ways: The time needed to re-start a failover after a previous failover was already tried against the same master by a given Sentinel, is two times the failover timeout. The time needed for a slave replicating to a wrong master according to a Sentinel current configuration, to be forced to replicate with the right master, is exactly the failover timeout (counting since the moment a Sentinel detected the misconfiguration). The time needed to cancel a failover that is already in progress but did not produced any configuration change (SLAVEOF NO ONE yet not acknowledged by the promoted slave). The maximum time a failover in progress waits for all the slaves to be reconfigured as slaves of the new master. However even after this time the slaves will be reconfigured by the Sentinels anyway, but not with the exact parallel-syncs progression as specified. Default is 3 minutes."
+		},
+		{
+			"name": "amountOfDbs",
+			"type": "string",
+			"label": "Number of databases",
+			"defaultValue": "16",
+			"required": false,
+			"groupName": "advanced",
+			"helpMarkDown": "Set the number of databases. The default database is DB 0."
+		},
+		{
+			"name": "maxClients",
+			"type": "string",
+			"label": "Max clients",
+			"defaultValue": "10000",
+			"required": false,
+			"groupName": "advanced",
+			"helpMarkDown": "Set the max number of connected clients at the same time. By default this limit is set to 10000 clients, however if the Redis server is not able to configure the process file limit to allow for the specified limit the max number of allowed clients is set to the current file limit minus 32 (as Redis reserves a few file descriptors for internal uses). Once the limit is reached Redis will close all the new connections sending an error 'max number of clients reached'."
+		},
+		{
+			"name": "timeOut",
+			"type": "string",
+			"label": "Timeout",
+			"defaultValue": "0",
+			"required": false,
+			"groupName": "advanced",
+			"helpMarkDown": "Close the connection after a client is idle for N seconds (0 to disable)."
+		},
+		{
+			"name": "tcpBacklog",
+			"type": "string",
+			"label": "TCP backlog",
+			"defaultValue": "",
+			"required": false,
+			"groupName": "advanced",
+			"helpMarkDown": "In high requests-per-second environments you need an high backlog in order to avoid slow clients connections issues. (Default 511)"
+		},
+		{
+			"name": "tcpKeepAlive",
+			"type": "string",
+			"label": "TCP keepalive",
+			"defaultValue": "0",
+			"required": false,
+			"groupName": "advanced",
+			"helpMarkDown": "If non-zero, use SO_KEEPALIVE to send TCP ACKs to clients in absence of communication. A reasonable value for this option is 60 seconds. This is useful for two reasons: 1. Detect dead peers. 2. Take the connection alive from the point of view of network equipment in the middle."
+		},
+		{
+			"name": "logLevel",
+			"type": "pickList",
+			"label": "Log level",
+			"defaultValue": "notice",
+			"required": false,
+			"groupName": "logging",
+			"helpMarkDown": "Specify the server verbosity level. This can be one of: * debug (a lot of information, useful for development/testing) * verbose (many rarely useful info, but not a mess like the debug level) * notice (moderately verbose, what you want in production probably) * warning (only very important / critical messages are logged)",
+			"options": {
+				"debug": "debug",
+				"verbose": "verbose",
+				"notice": "notice",
+				"warning": "warning"
+			}
+		},
+		{
+			"name": "logfile",
+			"type": "string",
+			"label": "Log filename",
+			"defaultValue": "",
+			"required": false,
+			"groupName": "logging",
+			"helpMarkDown": "Specify the log file name. Also 'stdout' can be used to force Redis to log on the standard output."
+		},
+		{
+			"name": "syslogEnabled",
+			"type": "boolean",
+			"label": "Use Windows EventLog",
+			"defaultValue": "False",
+			"required": false,
+			"groupName": "logging",
+			"helpMarkDown": "Option to enable logging to the Windows EventLog. Optionally update the other syslog parameters to suit your needs. If Redis is installed and launched as a Windows Service, this will automatically be enabled."
+		},
+		{
+			"name": "syslogName",
+			"type": "string",
+			"label": "EventLog source name",
+			"defaultValue": "",
+			"required": false,
+			"groupName": "logging",
+			"helpMarkDown": "Specify the source name of the events in the Windows Application log."
+		},
+		{
+			"name": "isSlave",
+			"type": "boolean",
+			"label": "Configure instance as slave",
+			"defaultValue": "False",
+			"required": false,
+			"groupName": "masterslave",
+			"helpMarkDown": "Make this Redis instance a copy of another Redis server."
+		},
+		{
+			"name": "masterIp",
+			"type": "string",
+			"label": "IP of master",
+			"defaultValue": "",
+			"required": true,
+			"groupName": "masterslave",
+			"visibleRule": "isSlave = true",
+			"helpMarkDown": "IP address of the master Redis server."
+		},
+		{
+			"name": "masterPort",
+			"type": "string",
+			"label": "Port of master",
+			"defaultValue": "",
+			"required": true,
+			"groupName": "masterslave",
+			"visibleRule": "isSlave = true",
+			"helpMarkDown": "Port of the master Redis server."
+		},
+		{
+			"name": "masterAuth",
+			"type": "string",
+			"label": "Master password",
+			"defaultValue": "",
+			"required": false,
+			"groupName": "masterslave",
+			"visibleRule": "isSlave = true",
+			"helpMarkDown": "If the master is password protected it is possible to tell the slave to authenticate before starting the replication synchronization process, otherwise the master will refuse the slave request. Leave empty if no password on the master."
+		},
+		{
+			"name": "slaveServeStaleData",
+			"type": "boolean",
+			"label": "Keep serving stale data",
+			"defaultValue": "True",
+			"required": false,
+			"groupName": "masterslave",
+			"visibleRule": "isSlave = true",
+			"helpMarkDown": "When a slave loses its connection with the master, or when the replication is still in progress, the slave can act in two different ways: 1. if set to 'yes' (the default) the slave will still reply to client requests, possibly with out of date data, or the data set may just be empty if this is the first synchronization. 2. if set to 'no' the slave will reply with an error \"SYNC with master in progress\" to all the kind of commands but to INFO and SLAVEOF."
+		},
+		{
+			"name": "slaveIsReadOnly",
+			"type": "boolean",
+			"label": "Use read-only mode",
+			"defaultValue": "True",
+			"required": false,
+			"groupName": "masterslave",
+			"visibleRule": "isSlave = true",
+			"helpMarkDown": "You can configure a slave instance to accept writes or not. Writing against a slave instance may be useful to store some ephemeral data (because data written on a slave will be easily deleted after resync with the master) but may also cause problems if clients are writing to it because of a misconfiguration."
+		},
+		{
+			"name": "slavePriority",
+			"type": "string",
+			"label": "Priority",
+			"defaultValue": "100",
+			"required": false,
+			"groupName": "masterslave",
+			"visibleRule": "isSlave = true",
+			"helpMarkDown": "An integer number published by Redis in the INFO output. It is used by Redis Sentinel in order to select a slave to promote into a master if the master is no longer working correctly. A slave with a low priority number is considered better for promotion. Priority 0 marks the slave as not able to perform the role of master, so a slave with priority of 0 will never be selected by Redis Sentinel for promotion."
+		},
+		{
+			"name": "disklessReplication",
+			"type": "boolean",
+			"label": "Use diskless replication",
+			"defaultValue": "False",
+			"required": false,
+			"groupName": "replication",
+			"helpMarkDown": "When diskless replication is used, the master waits a configurable amount of time (in seconds) before starting the transfer in the hope that multiple slaves will arrive and the transfer can be parallelized."
+		},
+		{
+			"name": "disklessReplicationDelay",
+			"type": "string",
+			"label": "Diskless replication delay",
+			"defaultValue": "5",
+			"required": false,
+			"groupName": "replication",
+			"visibleRule": "disklessReplication = true",
+			"helpMarkDown": "When diskless replication is enabled, it is possible to configure the delay the server waits in order to spawn the child that trnasfers the RDB via socket to the slaves. This is important since once the transfer starts, it is not possible to serve new slaves arriving, that will be queued for the next RDB transfer, so the server waits a delay in order to let more slaves arrive. The delay is specified in seconds, and by default is 5 seconds. To disable it entirely just set it to 0 seconds and the transfer will start ASAP."
+		},
+		{
+			"name": "replicationPingSlavePeriod",
+			"type": "string",
+			"label": "PING period",
+			"defaultValue": "10",
+			"required": false,
+			"groupName": "replication",
+			"helpMarkDown": "Slaves send PINGs to server in a predefined interval. It's possible to change this interval with the repl_ping_slave_period option. The default value is 10 seconds."
+		},
+		{
+			"name": "replicationTimeout",
+			"type": "string",
+			"label": "Timeout",
+			"defaultValue": "60",
+			"required": false,
+			"groupName": "replication",
+			"helpMarkDown": "This following option sets the replication timeout for: 1. Bulk transfer I/O during SYNC, from the point of view of slave. 2. Master timeout from the point of view of slaves (data, pings). 3. Slave timeout from the point of view of masters (REPLCONF ACK pings)"
+		},
+		{
+			"name": "replicationTcpNoDelay",
+			"type": "boolean",
+			"label": "Disable TCP_NODELAY",
+			"defaultValue": "False",
+			"required": false,
+			"groupName": "replication",
+			"helpMarkDown": "Disable TCP_NODELAY on the slave socket after SYNC? If you select 'yes' Redis will use a smaller number of TCP packets and less bandwidth to send data to slaves. But this can add a delay for the data to appear on the slave side, up to 40 milliseconds with Linux kernels using a default configuration. If you select 'no' the delay for data to appear on the slave side will be reduced but more bandwidth will be used for replication."
+		},
+		{
+			"name": "replicationBacklogSize",
+			"type": "string",
+			"label": "Backlog size",
+			"defaultValue": "1mb",
+			"required": false,
+			"groupName": "replication",
+			"helpMarkDown": "Set the replication backlog size. The backlog is a buffer that accumulates slave data when slaves are disconnected for some time, so that when a slave wants to reconnect again, often a full resync is not needed, but a partial resync is enough, just passing the portion of data the slave missed while disconnected. The bigger the replication backlog, the longer the time the slave can be disconnected and later be able to perform a partial resynchronization. The backlog is only allocated once there is at least a slave connected."
+		},
+		{
+			"name": "replicationBacklogTtl",
+			"type": "string",
+			"label": "Backlog TTL",
+			"defaultValue": "3600",
+			"required": false,
+			"groupName": "replication",
+			"helpMarkDown": "After a master has no longer connected slaves for some time, the backlog will be freed. The following option configures the amount of seconds that need to elapse, starting from the time the last slave disconnected, for the backlog buffer to be freed. A value of 0 means to never release the backlog."
+		}
+	],
+	"execution": {
+		"PowerShell": {
+			"target": "$(currentDirectory)\\configureredis.ps1",
+			"argumentFormat": "",
+			"workingDirectory": "$(currentDirectory)"
+		}
+	}
+}

@@ -1,0 +1,78 @@
+{
+	"manifestVersion": 1,
+	"id": "jungit-redis",
+	"name": "Redis configuration",
+	"description": "Configuration of a Redis instance",
+	"version": "1.0.12",
+	"publisher": "jungeriusit",
+	"baseUri": "https://github.com/chrisism/",
+	"scopes": [],
+	"tags": [
+		"configure",
+		"redis",
+		"rediscache",
+		"cache",
+		"sentinel"
+	],
+	"links": {
+		"home": {
+			"uri": "https://github.com/chrisism/VSTS.Redis"
+		},
+		"learn": {
+			"uri": "https://github.com/chrisism/VSTS.Redis"
+		},
+		"support": {
+			"uri": "https://github.com/chrisism/VSTS.Redis/issues"
+		},
+		"repository": {
+			"uri": "https://github.com/chrisism/VSTS.Redis"
+		}
+	},
+	"repository": {
+		"type": "git",
+		"uri": "https://github.com/chrisism/VSTS.Redis"
+	},
+	"screenshots": [
+		{
+			"path": "screenshot.jpg"
+		}
+	],
+	"branding": {
+		"color": "rgb(157, 140, 255)",
+		"theme": "light"
+	},
+	"targets": [
+		{
+			"id": "Microsoft.VisualStudio.Services"
+		}
+	],
+	"categories": [
+		"Build and release"
+	],
+	"icons": {
+		"default": "logo.png"
+	},
+	"files": [
+		{ "path": "RedisConfig" }
+	],
+	"content": {
+		"details": {
+			"path": "overview.md"
+		},
+		"license": {
+			"path": "license.md"
+		}
+	},
+	"contributions": [
+		{
+			"id": "jungit-redis",
+			"type": "ms.vss-distributed-task.task",
+			"targets": [
+				"ms.vss-distributed-task.tasks"
+			],
+			"properties": {
+				"name": "RedisConfig"
+			}
+		}
+	]
+}
